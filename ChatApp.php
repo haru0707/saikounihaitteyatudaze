@@ -40,9 +40,17 @@ class ChatApp {
   }
   // コメント新規作成
   function newComment($room, $name, $text){
-    date_default_timezone_set();
+    date_default_timezone_set('Asia/Tokyo');
     $data = $this->getUp();
-    $data['rooms'][$room]['posts'][] = array('name'=>$name, 'text'=>$text);
+    $data['rooms'][$room]['posts'][] = array('name'=>$name, 'text'=>$text, 'date'=>date('Y-m-d-H-i-s'));
+    if($this->postUp($data)){
+      return true;
+    }
+    return false;
+  }
+  // データ読み込み
+  function read(){
+    return $this->getUp();
   }
   // JSON書き込み関数
   private function postUp($data){
@@ -63,7 +71,11 @@ class ChatApp {
   }
   // JSON読み込み関数
   private function getUp(){
-    return json_decode(file_get_contents($this->path), true);
+    $data = file_get_contents($this->path);
+    if($data){
+      return json_decode($data, true);
+    }
+    return false;
   }
 }
 ?>
