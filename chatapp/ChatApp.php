@@ -29,24 +29,28 @@ class ChatApp {
     $data = $this->getUp();
     $names = array_column($data, 'name');
     if(!in_array($name, $names, true)){
-      $new = count($data['rooms']);
-      $data['rooms'][$new]['name'] = $name;
-      $data['rooms'][$new]['posts'] = array();
-      if(postUp($data)){
-        return true;
+      if(is_string($name)){
+        $new = count($data['rooms']);
+        $data['rooms'][$new]['name'] = $name;
+        $data['rooms'][$new]['posts'] = array();
+        if(postUp($data)){
+          return true;
+        }
       }
     }
     return false;
   }
   // コメント新規作成
   function newComment($room, $name, $text){
-    date_default_timezone_set('Asia/Tokyo');
-    $data = $this->getUp();
-    $data['rooms'][$room]['posts'][] = array('name'=>$name, 'text'=>$text, 'date'=>date('Y-m-d-H-i-s'));
-    if($this->postUp($data)){
-      return true;
+    if(is_string($room) && is_string($name) && is_string($text)){
+      date_default_timezone_set('Asia/Tokyo');
+      $data = $this->getUp();
+      $data['rooms'][$room]['posts'][] = array('name'=>$name, 'text'=>$text, 'date'=>date('Y-m-d-H-i-s'));
+      if($this->postUp($data)){
+        return true;
+      }
+      return false;
     }
-    return false;
   }
   // データ読み込み
   function read(){
