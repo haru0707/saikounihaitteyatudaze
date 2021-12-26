@@ -24,6 +24,26 @@ class ChatApp {
     }
     return false;
   }
+  // ルーム新規作成
+  function newRoom($name){
+    $data = $this->getUp();
+    $names = array_column($data, 'name');
+    if(!in_array($name, $names, true)){
+      $new = count($data['rooms']);
+      $data['rooms'][$new]['name'] = $name;
+      $data['rooms'][$new]['posts'] = array();
+      if(postUp($data)){
+        return true;
+      }
+    }
+    return false;
+  }
+  // コメント新規作成
+  function newComment($room, $name, $text){
+    date_default_timezone_set();
+    $data = $this->getUp();
+    $data['rooms'][$room]['posts'][] = array('name'=>$name, 'text'=>$text);
+  }
   // JSON書き込み関数
   private function postUp($data){
     $json = json_encode($data);
