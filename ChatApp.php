@@ -11,6 +11,7 @@ class ChatApp {
     $this->script = $script;
     $this->path = realpath($path);
   }
+  // アプリケーションを作成する
   function buildApp(){
     $data = $this->getUp();
     if(is_string($this->title) && is_string($this->script)){
@@ -23,9 +24,10 @@ class ChatApp {
     }
     return false;
   }
+  // JSON書き込み関数
   private function postUp($data){
     $json = json_encode($data);
-    $fp = fopen($this->$)
+    $fp = fopen($this->path);
     if($fp){
       if(flock($fp, LOCK_SH)){
         if(fwrite($fp, $json)){
@@ -39,6 +41,7 @@ class ChatApp {
     }
     return false;
   }
+  // JSON読み込み関数
   private function getUp(){
     return json_decode(file_get_contents($this->path), true);
   }
